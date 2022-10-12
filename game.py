@@ -2,6 +2,7 @@ import pygame as pg
 from settings import Settings
 import game_functions as gf
 from pacman import Pacman
+from button import Button
 
 
 class Game:
@@ -11,13 +12,22 @@ class Game:
         size = self.settings.screen_width, self.settings.screen_height
         self.screen = pg.display.set_mode(size=size)
         pg.display.set_caption("Pac-Man Portal")
-        self.font = pg.font.SysFont(None, 30)
 
         self.image = pg.image.load('images/map_empty.bmp')
         self.rect = (0, 48)
         # self.rect = self.map.get_rect()
 
         self.pacman = Pacman(game=self, screen=self.screen, settings=self.settings)
+        self.play_button = Button(screen=self.screen, top=400, width=240, height=50, msg="PLAY GAME")
+        self.high_scores_button = Button(screen=self.screen, top=460, width=240, height=50, msg="HIGH SCORES")
+
+    def main_menu(self):
+        while True:
+            gf.check_events(game=self, play_button=self.play_button, high_scores_button=self.high_scores_button)
+            self.screen.fill(self.settings.bg_color)
+            self.play_button.update()
+            self.high_scores_button.update()
+            pg.display.flip()
 
     def reset(self):
         pass
@@ -27,7 +37,7 @@ class Game:
 
     def play(self):
         while True:
-            gf.check_events()
+            gf.check_events(game=self, play_button=self.play_button, high_scores_button=self.high_scores_button)
             self.screen.fill(self.settings.bg_color)
             self.screen.blit(self.image, self.rect)
             self.pacman.update()
@@ -36,7 +46,7 @@ class Game:
 
 def main():
     g = Game()
-    g.play()
+    g.main_menu()
 
 
 if __name__ == '__main__':

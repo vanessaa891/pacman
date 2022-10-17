@@ -45,8 +45,28 @@ class Game:
 
 
 def main():
+    window = pg.display.set_mode((1200, 800))
+    pg.display.set_caption("PacMan")
+    black = (0, 0, 0)
+    end_screen = False
+    pg.mixer.init()
+
+    window.fill(black)
+    imp = pg.image.load("images/start.png")
+
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
+            end_screen = True
+
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_SPACE:
+                end_screen = True
+
     g = Game()
     g.main_menu()
+
+    window.blit(imp, (0,0))
+    pg.display.flip()
 
 
 if __name__ == '__main__':
